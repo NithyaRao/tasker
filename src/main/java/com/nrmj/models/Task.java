@@ -1,7 +1,11 @@
 package com.nrmj.models;
 
+
+import javax.persistence.*;
 import java.util.Date;
 
+@Entity
+@Table(name = "tasks")
 public class Task {
     private int id;
     private String name;
@@ -12,10 +16,13 @@ public class Task {
     private Date updatedAt;
 
     public Task() {
+        this.isComplete = false;
         this.createdAt = new Date();
         this.updatedAt = new Date();
     }
 
+    @Id
+    @GeneratedValue
     public int getId() {
         return id;
     }
@@ -31,6 +38,7 @@ public class Task {
     public String getName() {
         return name;
     }
+
     public String getCategory() {
         return category;
     }
@@ -39,6 +47,7 @@ public class Task {
         this.category = category;
     }
 
+    @Temporal(TemporalType.DATE)
     public Date getDue() {
         return due;
     }
@@ -47,6 +56,7 @@ public class Task {
         this.due = due;
     }
 
+    @Column(name = "is_complete", columnDefinition = "BIT", length = 1)
     public Boolean getComplete() {
         return isComplete;
     }
@@ -55,6 +65,8 @@ public class Task {
         isComplete = complete;
     }
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_at", insertable = true, updatable = false)
     public Date getCreatedAt() {
         return createdAt;
     }
@@ -63,6 +75,8 @@ public class Task {
         this.createdAt = createdAt;
     }
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "updated_at")
     public Date getUpdatedAt() {
         return updatedAt;
     }
@@ -71,10 +85,10 @@ public class Task {
         this.updatedAt = updatedAt;
     }
 
+    @PreUpdate
     protected void updateTime() {
-     this.updatedAt = new Date();
+        this.updatedAt = new Date();
     }
-
 
 
 }
